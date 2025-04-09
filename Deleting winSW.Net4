@@ -1,0 +1,85 @@
+
+🔧 People Service Debugging Command Cheatsheet
+📍 1. List all running services
+cmd
+Copy
+
+sc query
+Lists all services and their states (running, stopped, etc.).
+
+📍 2. List all services with PID (Process ID)
+cmd
+Copy
+
+tasklist /svc
+Shows running processes and the services associated with each.
+
+📍 3. Check running Java processes (to locate People Service)
+cmd
+Copy
+
+tasklist | findstr java
+Filters all currently running Java processes.
+
+📍 4. Find which port the service is using
+cmd
+Copy
+
+netstat -aon | findstr :8080
+Checks if any process is using port 8080 and shows the associated PID.
+
+📍 5. Find the service listening on a port by PID
+cmd
+Copy
+
+tasklist | findstr <PID>
+Once you find the PID from netstat, use this to match it to a process.
+
+📍 6. Stop People Service
+cmd
+Copy
+
+sc stop people-service
+Stops the service safely.
+
+📍 7. Delete People Service
+cmd
+Copy
+
+sc delete people-service
+Removes the service from Windows permanently.
+
+📍 8. Uninstall WinSW Service
+cmd
+Copy
+
+WinSW.NET4.exe uninstall
+Unregisters the service if it was registered using WinSW.
+
+📍 9. Install WinSW Service
+cmd
+Copy
+
+WinSW.NET4.exe install
+Registers the service (based on the accompanying XML config file).
+
+📍 10. Manually start the service
+cmd
+Copy
+
+WinSW.NET4.exe start
+Starts the WinSW-wrapped service manually (alternative to Windows Services panel).
+
+📍 11. Check top memory-consuming processes
+powershell
+Copy
+
+Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 10
+Useful when checking if memory is the issue, especially with out-of-memory exceptions.
+
+📍 12. Check port usage directly
+cmd
+Copy
+
+netstat -abno
+Shows which executable is bound to each port (run with Admin privilege).
