@@ -1,0 +1,85 @@
+🚀 Loan Service – Git Pull, Build, Deploy Script
+✅ 1. Navigate to Loan Service Directory
+cmd
+Copy
+replace with your file part
+cd "C:\Users\Administrator\Desktop\Deploy\Loan Service"
+✅ 2. Pull Latest Code from GitHub
+Make sure Git is installed and available in your PATH.
+
+cmd
+Copy
+replace with your file part
+git reset --hard
+git pull origin main
+🔐 If authentication is required:
+
+Either configure your Git with a Personal Access Token (PAT)
+
+Or use a Git Credential Manager.
+
+✅ 3. Build the JAR File
+If you're using Maven:
+
+cmd
+Copy
+replace with your file part
+mvn clean install
+Or if using Gradle:
+
+cmd
+Copy
+replace with your file part
+gradlew build
+✅ 4. Stop the Running Loan Service
+cmd
+Copy
+replace with your file part
+sc stop loan-service
+or using WinSW:
+
+cmd
+Copy
+replace with your file part
+WinSW.NET4.exe stop
+✅ 5. Replace the Old JAR
+Make sure your new JAR is copied over the old one in the correct folder:
+
+cmd
+Copy
+replace with your file part
+copy /Y "C:\Users\Administrator\Desktop\Deploy\Loan Service\target\loan-service.jar" "C:\Users\Administrator\Desktop\Deploy\Loan Service\loan-service.jar"
+✅ 6. Start the Loan Service
+cmd
+Copy
+replace with your file part
+WinSW.NET4.exe start
+✅ 7. Check That It's Running on the Correct Port (e.g., 8083)
+cmd
+Copy
+replace with your file part
+netstat -aon | findstr :8083
+Then trace it with:
+
+cmd
+Copy
+replace with your file part
+tasklist | findstr <PID>
+✍️ Notes for Config
+Make sure your WinSW XML config file (e.g., loan-service.xml) has something like this inside:
+
+xml
+Copy
+replace with your file part
+<service>
+  <id>loan-service</id>
+  <name>Loan Service</name>
+  <description>Spring Boot Loan Microservice</description>
+  <executable>java</executable>
+  <arguments>-jar "loan-service.jar" --server.port=8083</arguments>
+  <logpath>logs</logpath>
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>5</keepFiles>
+  </log>
+</service>
